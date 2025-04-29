@@ -41,12 +41,14 @@ import SessionChart from '@/components/Page/Dashboard/SessionChart'
 import TrafficChart from '@/components/Page/Dashboard/TrafficChart'
 import { getDictionary } from '@/locales/dictionary'
 
+//TODO questa è la homepage
+
 export default async function Page() {
   const dict = await getDictionary()
 
   return (
     <div>
-      <div className="row">
+      {/* <div className="row">
         <div className="col-sm-6 col-lg-3">
           <Card bg="primary" text="white" className="mb-4">
             <CardBody className="pb-0 d-flex justify-content-between align-items-start">
@@ -1183,7 +1185,7 @@ export default async function Page() {
             </CardBody>
           </Card>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

@@ -271,12 +271,12 @@
   },
   "sidebar": {
     "items": {
-      "dashboard": "Dashboard",
-      "sample": "Sample",
-      "theme": "Theme",
-      "colors": "Colors",
-      "typography": "Typography",
-      "components": "Components",
+      "client_area": "Client Area",
+      "trading_account": "Trading account",
+      "finance": "Finance",
+      "deposit": "Deposit",
+      "withdraw": "Withdraw",
+      "transaction_history": "Transaction history",
       "accordion": "Accordion",
       "breadcrumb": "Breadcrumb",
       "cards": "Cards",

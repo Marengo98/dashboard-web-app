@@ -1,0 +1,23 @@
+# Usa l'immagine ufficiale Node
+FROM node:20
+
+# Imposta directory lavoro
+WORKDIR /app
+
+# Copia package.json e package-lock.json
+COPY package*.json ./
+
+# Installa dipendenze
+RUN npm install
+
+# Copia tutto il progetto
+COPY . .
+
+# Build dell'app
+RUN npm run build
+
+# Espone la porta
+EXPOSE 3000
+
+# Comando per avviare Next.js
+CMD ["npm", "run", "dev"]

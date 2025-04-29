@@ -271,12 +271,12 @@
   },
   "sidebar": {
     "items": {
-      "dashboard": "面板",
-      "sample": "样例",
-      "theme": "主题",
-      "colors": "颜色",
-      "typography": "排版",
-      "components": "组件",
+      "client_area": "Client Area",
+      "trading_account": "Trading account",
+      "finance": "Finance",
+      "deposit": "Deposit",
+      "withdraw": "Withdraw",
+      "transaction_history": "Transaction history",
       "accordion": "手风琴",
       "breadcrumb": "面包屑",
       "cards": "卡片",

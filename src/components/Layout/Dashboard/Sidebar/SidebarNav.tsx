@@ -8,6 +8,12 @@ import {
   faCode,
   faDroplet,
   faGauge,
+  faUser,
+  faCoins,
+  faClipboard,
+  faCirclePlus,
+  faCircleMinus,
+  faMoneyBillTransfer,
   faLayerGroup,
   faLocationArrow,
   faPencil,
@@ -32,11 +38,29 @@ export default async function SidebarNav() {
   const dict = await getDictionary()
   return (
     <ul className="list-unstyled">
-      <SidebarNavItem icon={faGauge} href="/">
-        {dict.sidebar.items.dashboard}
-        <small className="ms-auto"><Badge bg="info" className="ms-auto">NEW</Badge></small>
-      </SidebarNavItem>
-      <SidebarNavItem icon={faCode} href="/pokemons">
+      <SidebarNavGroup toggleIcon={faUser} toggleText={dict.sidebar.items.client_area}>
+        <SidebarNavItem icon={faClipboard} href="/">
+          {dict.sidebar.items.trading_account}
+          <small className="ms-auto"><Badge bg="info" className="ms-auto">NEW</Badge></small>
+        </SidebarNavItem>
+      </SidebarNavGroup>
+
+      <SidebarNavGroup toggleIcon={faCoins} toggleText={dict.sidebar.items.finance}>
+        <SidebarNavItem icon={faCirclePlus} href="/">
+          {dict.sidebar.items.deposit}
+          <small className="ms-auto"><Badge bg="info" className="ms-auto">NEW</Badge></small>
+        </SidebarNavItem>
+        <SidebarNavItem icon={faCircleMinus} href="/">
+          {dict.sidebar.items.withdraw}
+          <small className="ms-auto"><Badge bg="info" className="ms-auto">NEW</Badge></small>
+        </SidebarNavItem>
+        <SidebarNavItem icon={faMoneyBillTransfer} href="/">
+          {dict.sidebar.items.transaction_history}
+          <small className="ms-auto"><Badge bg="info" className="ms-auto">NEW</Badge></small>
+        </SidebarNavItem>
+      </SidebarNavGroup>
+
+      {/* <SidebarNavItem icon={faCode} href="/pokemons">
         {dict.sidebar.items.sample}
         <small className="ms-auto"><Badge bg="danger" className="ms-auto">DEMO</Badge></small>
       </SidebarNavItem>
@@ -61,9 +85,9 @@ export default async function SidebarNav() {
         <SidebarNavItem href="#">{dict.sidebar.items.tables}</SidebarNavItem>
         <SidebarNavItem href="#">{dict.sidebar.items.tabs}</SidebarNavItem>
         <SidebarNavItem href="#">{dict.sidebar.items.tooltips}</SidebarNavItem>
-      </SidebarNavGroup>
+      </SidebarNavGroup> */}
 
-      <SidebarNavGroup toggleIcon={faLocationArrow} toggleText={dict.sidebar.items.buttons}>
+      {/* <SidebarNavGroup toggleIcon={faLocationArrow} toggleText={dict.sidebar.items.buttons}>
         <SidebarNavItem href="#">{dict.sidebar.items.buttons}</SidebarNavItem>
         <SidebarNavItem href="#">{dict.sidebar.items.buttons_group}</SidebarNavItem>
         <SidebarNavItem href="#">{dict.sidebar.items.dropdowns}</SidebarNavItem>
@@ -110,7 +134,7 @@ export default async function SidebarNav() {
       </SidebarNavGroup>
 
       <SidebarNavItem icon={faFileLines} href="#">{dict.sidebar.items.docs}</SidebarNavItem>
-      <SidebarNavItem icon={faLayerGroup} href="https://coreui.io/pro/">{dict.sidebar.items.try_core_ui_pro}</SidebarNavItem>
+      <SidebarNavItem icon={faLayerGroup} href="https://coreui.io/pro/">{dict.sidebar.items.try_core_ui_pro}</SidebarNavItem> */}
     </ul>
   )
 }
