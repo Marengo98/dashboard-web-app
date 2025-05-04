@@ -6,6 +6,7 @@ import Sidebar from '@/components/Layout/Dashboard/Sidebar/Sidebar'
 import SidebarNav from '@/components/Layout/Dashboard/Sidebar/SidebarNav'
 import Header from '@/components/Layout/Dashboard/Header/Header'
 import Footer from '@/components/Layout/Dashboard/Footer/Footer'
+import Breadcrumb from '@/components/Layout/Dashboard/Breadcrumb/Breadcrumb'
 
 export default function Layout({
   children,
@@ -20,15 +21,17 @@ export default function Layout({
       </Sidebar>
 
       <div className="wrapper d-flex flex-column min-vh-100">
-        <Header />
-
-        <div className="body flex-grow-1 px-sm-2 mb-4">
+        {/* <Header /> */}
+        <Container fluid className='mt-3'>
+          <Breadcrumb />
+        </Container>
+        <div className="body flex-grow-1 px-sm-2 mb-4 mt-2">
           <Container fluid="lg">
             {children}
           </Container>
         </div>
 
-        <Footer />
+        {/* <Footer /> */}
       </div>
 
       <SidebarOverlay />

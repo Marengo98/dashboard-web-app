@@ -266,8 +266,11 @@
   },
   "breadcrumb": {
     "home": "Home",
-    "library": "Library",
-    "data": "Data"
+    "trade_account": "Trade Account",
+    "withdraw": "Withdraw",
+    "deposit": "Deposit",
+    "transaction_history": "Transaction History"
+
   },
   "sidebar": {
     "items": {

@@ -19,6 +19,8 @@ import {
   faPencil,
   faPuzzlePiece,
   faRightToBracket,
+  faWallet,
+  faMoneyBill,
 } from '@fortawesome/free-solid-svg-icons'
 import React, { PropsWithChildren } from 'react'
 import { Badge } from 'react-bootstrap'
@@ -39,22 +41,22 @@ export default async function SidebarNav() {
   return (
     <ul className="list-unstyled">
       <SidebarNavGroup toggleIcon={faUser} toggleText={dict.sidebar.items.client_area}>
-        <SidebarNavItem icon={faClipboard} href="/">
+        <SidebarNavItem icon={faClipboard} href="/trade_account">
           {dict.sidebar.items.trading_account}
           <small className="ms-auto"><Badge bg="info" className="ms-auto">NEW</Badge></small>
         </SidebarNavItem>
       </SidebarNavGroup>
 
       <SidebarNavGroup toggleIcon={faCoins} toggleText={dict.sidebar.items.finance}>
-        <SidebarNavItem icon={faCirclePlus} href="/">
+        <SidebarNavItem icon={faWallet} href="/deposit">
           {dict.sidebar.items.deposit}
           <small className="ms-auto"><Badge bg="info" className="ms-auto">NEW</Badge></small>
         </SidebarNavItem>
-        <SidebarNavItem icon={faCircleMinus} href="/">
+        <SidebarNavItem icon={faMoneyBill} href="/withdraw">
           {dict.sidebar.items.withdraw}
           <small className="ms-auto"><Badge bg="info" className="ms-auto">NEW</Badge></small>
         </SidebarNavItem>
-        <SidebarNavItem icon={faMoneyBillTransfer} href="/">
+        <SidebarNavItem icon={faMoneyBillTransfer} href="/transaction_history">
           {dict.sidebar.items.transaction_history}
           <small className="ms-auto"><Badge bg="info" className="ms-auto">NEW</Badge></small>
         </SidebarNavItem>
