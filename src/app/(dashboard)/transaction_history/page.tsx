@@ -1,13 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Container, Table } from 'react-bootstrap';
+import { Container, Table, Pagination } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faSort,
-  faSortUp,
-  faSortDown,
-} from '@fortawesome/free-solid-svg-icons';
+import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 type Transaction = {
   date: string;
@@ -20,6 +16,61 @@ type Transaction = {
 
 const initialTransactions: Transaction[] = [
   {
+    date: '15/05/2025 10:38:24',
+    type: 'Withdraw',
+    method: 'Crypto Wallet',
+    account: 'MT5 5001542',
+    amount: 200.0,
+    status: 'Completed',
+  },
+  {
+    date: '10/05/2025 16:28:23',
+    type: 'Withdraw',
+    method: 'Crypto Wallet',
+    account: 'MT5 5001313',
+    amount: 234.0,
+    status: 'Completed',
+  },
+  {
+    date: '09/05/2025 11:47:37',
+    type: 'Transfer',
+    method: '',
+    account: 'MT5 5000996 → MT5 5001542',
+    amount: 551.41,
+    status: 'Approved → Approved',
+  },
+  {
+    date: '09/05/2025 11:47:17',
+    type: 'Transfer',
+    method: '',
+    account: 'MT5 5001188 → MT5 5000996',
+    amount: 78.57,
+    status: 'Approved → Approved',
+  },
+  {
+    date: '08/05/2025 10:18:53',
+    type: 'Withdraw',
+    method: 'Crypto Wallet',
+    account: 'MT5 5001542',
+    amount: 100.0,
+    status: 'Completed',
+  },
+  {
+    date: '05/04/2025 14:20:00',
+    type: 'Deposit',
+    method: 'Wire Transfer',
+    account: 'MT5 5001188',
+    amount: 350.0,
+    status: 'Completed',
+  },
+  {
+    date: '01/04/2025 09:10:12',
+    type: 'Withdraw',
+    method: 'Crypto Wallet',
+    account: 'MT5 5001313',
+    amount: 50.0,
+    status: 'Pending',
+  },{
     date: '15/04/2025 10:38:24',
     type: 'Withdraw',
     method: 'Crypto Wallet',
@@ -79,9 +130,12 @@ const initialTransactions: Transaction[] = [
 
 type SortKey = keyof Transaction;
 
+const ITEMS_PER_PAGE = 5;
+
 export default function TransactionHistory() {
   const [sortKey, setSortKey] = useState<SortKey>('date');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleSort = (key: SortKey) => {
     if (key === sortKey) {
@@ -90,12 +144,11 @@ export default function TransactionHistory() {
       setSortKey(key);
       setSortOrder('asc');
     }
+    setCurrentPage(1); // reset pagina su nuovo ordinamento
   };
 
   const getIcon = (key: SortKey) => {
-    if (key !== sortKey) {
-      return <FontAwesomeIcon icon={faSort} className="ms-2" />;
-    }
+    if (key !== sortKey) return <FontAwesomeIcon icon={faSort} className="ms-2" />;
     return (
       <FontAwesomeIcon
         icon={sortOrder === 'asc' ? faSortUp : faSortDown}
@@ -116,6 +169,34 @@ export default function TransactionHistory() {
       ? String(aVal).localeCompare(String(bVal))
       : String(bVal).localeCompare(String(aVal));
   });
+
+  const totalPages = Math.ceil(sortedTransactions.length / ITEMS_PER_PAGE);
+  const paginatedTransactions = sortedTransactions.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const renderPagination = () => (
+    <Pagination className="mt-3">
+      <Pagination.Prev
+        onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+        disabled={currentPage === 1}
+      />
+      {[...Array(totalPages)].map((_, idx) => (
+        <Pagination.Item
+          key={idx + 1}
+          active={idx + 1 === currentPage}
+          onClick={() => setCurrentPage(idx + 1)}
+        >
+          {idx + 1}
+        </Pagination.Item>
+      ))}
+      <Pagination.Next
+        onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+        disabled={currentPage === totalPages}
+      />
+    </Pagination>
+  );
 
   return (
     <Container className="my-4">
@@ -147,7 +228,7 @@ export default function TransactionHistory() {
           </tr>
         </thead>
         <tbody>
-          {sortedTransactions.map((tx, idx) => (
+          {paginatedTransactions.map((tx, idx) => (
             <tr key={idx}>
               <td>{tx.date}</td>
               <td>{tx.type}</td>
@@ -159,6 +240,8 @@ export default function TransactionHistory() {
           ))}
         </tbody>
       </Table>
+
+      {totalPages > 1 && renderPagination()}
     </Container>
   );
 }

@@ -1,34 +1,42 @@
+'use client';
 
-import { faMoneyBill, faUser, faWallet, faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons';
+import { useSession, signOut } from 'next-auth/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Link from 'next/link';
-import React from 'react'
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import {
+  faWallet,
+  faMoneyBill,
+  faMoneyBillTransfer,
+  faRightFromBracket,
+} from '@fortawesome/free-solid-svg-icons';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 
-export default async function TradeAccountPage() {
+export default function TradeAccountClient() {
+  const { data: session } = useSession();
+  const user = session?.user;
 
   const buttons = [
-    {
-      icon: faWallet,
-      label: 'Deposit funds',
-      href: '/deposit',
-    },
-    {
-      icon: faMoneyBill,
-      label: 'Withdraw Funds',
-      href: '/withdraw',
-    },
-    {
-      icon: faMoneyBillTransfer,
-      label: 'Transaction History',
-      href: '/transfer',
-    },
+    { icon: faWallet, label: 'Deposit funds', href: '/deposit' },
+    { icon: faMoneyBill, label: 'Withdraw Funds', href: '/withdraw' },
+    { icon: faMoneyBillTransfer, label: 'Transaction History', href: '/transfer' },
   ];
 
   return (
-    <Container fluid className="vh-100 d-flex align-items-start">
+    <Container>
+    
+
       <Col>
       <h2>Account Summary</h2>
+      <Row className="w-100 align-items-center justify-content-between mb-4">
+        <Col>
+          <h4 className="mb-0">Benvenuto{user?.username ? `, ${user.username}` : ''} 👋</h4>
+        </Col>
+        <Col xs="auto">
+          <Button variant="outline-danger" onClick={() => signOut({ callbackUrl: '/login' })}>
+            <FontAwesomeIcon icon={faRightFromBracket} className="me-2" />
+            Logout
+          </Button>
+        </Col>
+      </Row>
         <Row className="w-100 mt-2">
           {buttons.map((btn, index) => (
             <Col className="p-1  ">

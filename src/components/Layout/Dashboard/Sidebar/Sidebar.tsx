@@ -39,7 +39,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
           width="118"
           height="46"
         >
-          <title>CoreUI Logo</title>
+          <title>TMP Logo</title>
           <use xlinkHref="/assets/brand/coreui.svg#full" />
         </svg>
         <svg

@@ -14,7 +14,7 @@ export const getPreferredTheme = () => {
 }
 
 export default function getTheme() {
-  const themeCookies = (cookies().get('theme')?.value ?? Theme.Light) as Theme
+  const themeCookies = (cookies().get('theme')?.value ?? Theme.Dark) as Theme
 
   if (themeCookies !== Theme.Light && themeCookies !== Theme.Dark) {
     return Theme.Light

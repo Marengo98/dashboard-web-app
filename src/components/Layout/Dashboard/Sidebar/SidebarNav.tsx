@@ -41,7 +41,7 @@ export default async function SidebarNav() {
   return (
     <ul className="list-unstyled">
       <SidebarNavGroup toggleIcon={faUser} toggleText={dict.sidebar.items.client_area}>
-        <SidebarNavItem icon={faClipboard} href="/trade_account">
+        <SidebarNavItem icon={faClipboard} href="/">
           {dict.sidebar.items.trading_account}
           <small className="ms-auto"><Badge bg="info" className="ms-auto">NEW</Badge></small>
         </SidebarNavItem>

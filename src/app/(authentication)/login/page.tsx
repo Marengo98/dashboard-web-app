@@ -34,10 +34,10 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
           >
             <div className="text-center">
               <h2>{dict.login.signup.title}</h2>
-              <p>{dict.login.signup.description}</p>
+              {/* <p>{dict.login.signup.description}</p>
               <Link className="btn btn-lg btn-outline-light mt-3" href="/register">
                 {dict.signup.register_now}
-              </Link>
+              </Link> */}
             </div>
           </Col>
         </Row>
