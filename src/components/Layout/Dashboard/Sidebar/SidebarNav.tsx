@@ -40,7 +40,7 @@ export default async function SidebarNav() {
   const dict = await getDictionary()
   return (
     <ul className="list-unstyled">
-      <SidebarNavGroup toggleIcon={faUser} toggleText={dict.sidebar.items.client_area}>
+      <SidebarNavGroup toggleIcon={faUser} toggleText="Client Area">
         <SidebarNavItem icon={faClipboard} href="/">
           {dict.sidebar.items.trading_account}
           <small className="ms-auto"><Badge bg="info" className="ms-auto">NEW</Badge></small>

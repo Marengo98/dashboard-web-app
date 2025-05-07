@@ -271,6 +271,12 @@
   },
   "sidebar": {
     "items": {
+      "client_area": "Client Area",
+      "trading_account": "Trading account",
+      "finance": "Finance",
+      "deposit": "Deposit",
+      "withdraw": "Withdraw",
+      "transaction_history": "Transaction history",
       "dashboard": "ダッシュボード",
       "sample": "サンプル",
       "theme": "テーマ",
