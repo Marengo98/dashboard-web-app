@@ -5,7 +5,7 @@ import { SearchParams } from '@/types/next'
 import { getDictionary } from '@/locales/dictionary'
 import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/auth.config'
 
 export default async function Page({ searchParams }: { searchParams: SearchParams }) {
   const { callbackUrl } = searchParams
