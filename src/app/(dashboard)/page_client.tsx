@@ -17,7 +17,7 @@ export default function TradeAccountClient() {
   const buttons = [
     { icon: faWallet, label: 'Deposit funds', href: '/deposit' },
     { icon: faMoneyBill, label: 'Withdraw Funds', href: '/withdraw' },
-    { icon: faMoneyBillTransfer, label: 'Transaction History', href: '/transfer' },
+    { icon: faMoneyBillTransfer, label: 'Transaction History', href: '/transaction_history' },
   ];
 
   return (
