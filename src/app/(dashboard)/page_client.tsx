@@ -52,12 +52,12 @@ export default function TradeAccountClient() {
         </Row>
         <Col className='mt-5'>
           <Row className="mb-2 align-items-center">
-            <Col xs={2}><strong>Balance:</strong></Col>
+            <Col xs={3}><strong>Balance:</strong></Col>
             <Col xs={3}> <div className="p-2 bg-body-secondary text-white rounded justify-content-center d-flex">1.000.000$</div></Col>
           </Row>
           <Row className="mb-2 align-items-center">
-            <Col xs={2}><strong>Profit:</strong></Col>
-            <Col xs={3} lassName="mb-2  "> <div className="p-2 bg-body-secondary text-white rounded justify-content-center d-flex">1.000.000$</div></Col>
+            <Col xs={3}><strong>Number account:</strong></Col>
+            <Col xs={3} lassName="mb-2"> <div className="p-2 bg-body-secondary text-white rounded justify-content-center d-flex">1234567890</div></Col>
           </Row>
         </Col>
       </Col>

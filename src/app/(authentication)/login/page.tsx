@@ -3,11 +3,18 @@ import Link from 'next/link'
 import LoginForm from '@/app/(authentication)/login/login'
 import { SearchParams } from '@/types/next'
 import { getDictionary } from '@/locales/dictionary'
+import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
 export default async function Page({ searchParams }: { searchParams: SearchParams }) {
   const { callbackUrl } = searchParams
   const dict = await getDictionary()
+  const session = await getServerSession(authOptions);
 
+  if (session) {
+    redirect('/');
+  }
   const getCallbackUrl = () => {
     if (!callbackUrl) {
       return '/' // Default redirect to home page
@@ -15,6 +22,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
 
     return callbackUrl.toString()
   }
+ 
 
   return (
     <Row className="justify-content-center align-items-center px-3">

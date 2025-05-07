@@ -200,7 +200,9 @@ export default function TransactionHistory() {
 
   return (
     <Container className="my-4">
-      <h2 className="fw-bold text-primary mb-1">Transaction History</h2>
+        <h2>
+        Transaction History 
+      </h2>
       <p className="text-muted mb-3">View the history of all your financial transactions</p>
       <hr />
 
