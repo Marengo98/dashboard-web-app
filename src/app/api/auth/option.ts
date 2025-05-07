@@ -2,7 +2,7 @@ import { NextAuthOptions, User } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { getDictionary } from '@/locales/dictionary'
 
-export const authOptions: NextAuthOptions = {
+/*export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ user, token }) {
       if (user) {
@@ -46,4 +46,4 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-}
+}*/
