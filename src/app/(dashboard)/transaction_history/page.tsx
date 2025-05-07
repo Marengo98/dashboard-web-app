@@ -218,9 +218,9 @@ export default function TransactionHistory() {
             <th onClick={() => handleSort('method')} style={{ cursor: 'pointer' }}>
               Method {getIcon('method')}
             </th>
-            <th onClick={() => handleSort('account')} style={{ cursor: 'pointer' }}>
+            {/* <th onClick={() => handleSort('account')} style={{ cursor: 'pointer' }}>
               Account {getIcon('account')}
-            </th>
+            </th> */}
             <th onClick={() => handleSort('amount')} style={{ cursor: 'pointer' }}>
               Amount {getIcon('amount')}
             </th>
@@ -235,7 +235,7 @@ export default function TransactionHistory() {
               <td>{tx.date}</td>
               <td>{tx.type}</td>
               <td>{tx.method || '-'}</td>
-              <td>{tx.account}</td>
+              {/* <td>{tx.account}</td> */}
               <td>{tx.amount.toFixed(2)}</td>
               <td>{tx.status}</td>
             </tr>

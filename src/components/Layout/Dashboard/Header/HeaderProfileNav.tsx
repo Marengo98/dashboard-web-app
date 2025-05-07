@@ -26,9 +26,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import HeaderLogout from '@/components/Layout/Dashboard/Header/HeaderLogout'
-import { authOptions } from '@/app/api/auth/option'
 import { getServerSession } from 'next-auth'
 import { getDictionary } from '@/locales/dictionary'
+import { authOptions } from '@/auth.config'
 
 type ItemWithIconProps = {
   icon: IconDefinition;
@@ -51,7 +51,7 @@ export default async function HeaderProfileNav() {
 
   return (
     <Nav>
-      <Dropdown as={NavItem}>
+      {/* <Dropdown as={NavItem}>
         <DropdownToggle variant="link" bsPrefix="hide-caret" className="py-0 px-2 rounded-0" id="dropdown-profile">
           <div className="avatar position-relative">
             {session && (
@@ -138,7 +138,7 @@ export default async function HeaderProfileNav() {
             </DropdownItem>
           </HeaderLogout>
         </DropdownMenu>
-      </Dropdown>
+      </Dropdown> */}
     </Nav>
   )
 }
