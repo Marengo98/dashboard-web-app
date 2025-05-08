@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
 import { Container, Table, Pagination } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
+import { getUserTransactions, getWalletTransactions } from '@/app/api/transaction/route';
+import { useSession } from 'next-auth/react';
 
 type Transaction = {
   date: string;
@@ -14,128 +16,147 @@ type Transaction = {
   status: string;
 };
 
-const initialTransactions: Transaction[] = [
-  {
-    date: '15/05/2025 10:38:24',
-    type: 'Withdraw',
-    method: 'Crypto Wallet',
-    account: 'MT5 5001542',
-    amount: 200.0,
-    status: 'Completed',
-  },
-  {
-    date: '10/05/2025 16:28:23',
-    type: 'Withdraw',
-    method: 'Crypto Wallet',
-    account: 'MT5 5001313',
-    amount: 234.0,
-    status: 'Completed',
-  },
-  {
-    date: '09/05/2025 11:47:37',
-    type: 'Transfer',
-    method: '',
-    account: 'MT5 5000996 → MT5 5001542',
-    amount: 551.41,
-    status: 'Approved → Approved',
-  },
-  {
-    date: '09/05/2025 11:47:17',
-    type: 'Transfer',
-    method: '',
-    account: 'MT5 5001188 → MT5 5000996',
-    amount: 78.57,
-    status: 'Approved → Approved',
-  },
-  {
-    date: '08/05/2025 10:18:53',
-    type: 'Withdraw',
-    method: 'Crypto Wallet',
-    account: 'MT5 5001542',
-    amount: 100.0,
-    status: 'Completed',
-  },
-  {
-    date: '05/04/2025 14:20:00',
-    type: 'Deposit',
-    method: 'Wire Transfer',
-    account: 'MT5 5001188',
-    amount: 350.0,
-    status: 'Completed',
-  },
-  {
-    date: '01/04/2025 09:10:12',
-    type: 'Withdraw',
-    method: 'Crypto Wallet',
-    account: 'MT5 5001313',
-    amount: 50.0,
-    status: 'Pending',
-  },{
-    date: '15/04/2025 10:38:24',
-    type: 'Withdraw',
-    method: 'Crypto Wallet',
-    account: 'MT5 5001542',
-    amount: 200.0,
-    status: 'Completed',
-  },
-  {
-    date: '10/04/2025 16:28:23',
-    type: 'Withdraw',
-    method: 'Crypto Wallet',
-    account: 'MT5 5001313',
-    amount: 234.0,
-    status: 'Completed',
-  },
-  {
-    date: '09/04/2025 11:47:37',
-    type: 'Transfer',
-    method: '',
-    account: 'MT5 5000996 → MT5 5001542',
-    amount: 551.41,
-    status: 'Approved → Approved',
-  },
-  {
-    date: '09/04/2025 11:47:17',
-    type: 'Transfer',
-    method: '',
-    account: 'MT5 5001188 → MT5 5000996',
-    amount: 78.57,
-    status: 'Approved → Approved',
-  },
-  {
-    date: '08/04/2025 10:18:53',
-    type: 'Withdraw',
-    method: 'Crypto Wallet',
-    account: 'MT5 5001542',
-    amount: 100.0,
-    status: 'Completed',
-  },
-  {
-    date: '05/04/2025 14:20:00',
-    type: 'Deposit',
-    method: 'Wire Transfer',
-    account: 'MT5 5001188',
-    amount: 350.0,
-    status: 'Completed',
-  },
-  {
-    date: '01/04/2025 09:10:12',
-    type: 'Withdraw',
-    method: 'Crypto Wallet',
-    account: 'MT5 5001313',
-    amount: 50.0,
-    status: 'Pending',
-  },
-];
+// const initialTransactions: Transaction[] = [
+//   {
+//     date: '15/05/2025 10:38:24',
+//     type: 'Withdraw',
+//     method: 'Crypto Wallet',
+//     account: 'MT5 5001542',
+//     amount: 200.0,
+//     status: 'Completed',
+//   },
+//   {
+//     date: '10/05/2025 16:28:23',
+//     type: 'Withdraw',
+//     method: 'Crypto Wallet',
+//     account: 'MT5 5001313',
+//     amount: 234.0,
+//     status: 'Completed',
+//   },
+//   {
+//     date: '09/05/2025 11:47:37',
+//     type: 'Transfer',
+//     method: '',
+//     account: 'MT5 5000996 → MT5 5001542',
+//     amount: 551.41,
+//     status: 'Approved → Approved',
+//   },
+//   {
+//     date: '09/05/2025 11:47:17',
+//     type: 'Transfer',
+//     method: '',
+//     account: 'MT5 5001188 → MT5 5000996',
+//     amount: 78.57,
+//     status: 'Approved → Approved',
+//   },
+//   {
+//     date: '08/05/2025 10:18:53',
+//     type: 'Withdraw',
+//     method: 'Crypto Wallet',
+//     account: 'MT5 5001542',
+//     amount: 100.0,
+//     status: 'Completed',
+//   },
+//   {
+//     date: '05/04/2025 14:20:00',
+//     type: 'Deposit',
+//     method: 'Wire Transfer',
+//     account: 'MT5 5001188',
+//     amount: 350.0,
+//     status: 'Completed',
+//   },
+//   {
+//     date: '01/04/2025 09:10:12',
+//     type: 'Withdraw',
+//     method: 'Crypto Wallet',
+//     account: 'MT5 5001313',
+//     amount: 50.0,
+//     status: 'Pending',
+//   },{
+//     date: '15/04/2025 10:38:24',
+//     type: 'Withdraw',
+//     method: 'Crypto Wallet',
+//     account: 'MT5 5001542',
+//     amount: 200.0,
+//     status: 'Completed',
+//   },
+//   {
+//     date: '10/04/2025 16:28:23',
+//     type: 'Withdraw',
+//     method: 'Crypto Wallet',
+//     account: 'MT5 5001313',
+//     amount: 234.0,
+//     status: 'Completed',
+//   },
+//   {
+//     date: '09/04/2025 11:47:37',
+//     type: 'Transfer',
+//     method: '',
+//     account: 'MT5 5000996 → MT5 5001542',
+//     amount: 551.41,
+//     status: 'Approved → Approved',
+//   },
+//   {
+//     date: '09/04/2025 11:47:17',
+//     type: 'Transfer',
+//     method: '',
+//     account: 'MT5 5001188 → MT5 5000996',
+//     amount: 78.57,
+//     status: 'Approved → Approved',
+//   },
+//   {
+//     date: '08/04/2025 10:18:53',
+//     type: 'Withdraw',
+//     method: 'Crypto Wallet',
+//     account: 'MT5 5001542',
+//     amount: 100.0,
+//     status: 'Completed',
+//   },
+//   {
+//     date: '05/04/2025 14:20:00',
+//     type: 'Deposit',
+//     method: 'Wire Transfer',
+//     account: 'MT5 5001188',
+//     amount: 350.0,
+//     status: 'Completed',
+//   },
+//   {
+//     date: '01/04/2025 09:10:12',
+//     type: 'Withdraw',
+//     method: 'Crypto Wallet',
+//     account: 'MT5 5001313',
+//     amount: 50.0,
+//     status: 'Pending',
+//   },
+// ];
 
 type SortKey = keyof Transaction;
 
 const ITEMS_PER_PAGE = 5;
 
 export default function TransactionHistory() {
+  const [transactions, setTransactions] = useState([]);
   const [sortKey, setSortKey] = useState<SortKey>('date');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [currentPage, setCurrentPage] = useState(1);
+  const { data: session } = useSession()
+
+  const userId = session?.user?.id
+  const jwt = session?.user?.jwt
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if(!userId || !jwt)return;
+        const txs = await getUserTransactions(userId.toString(), jwt);
+        setTransactions(txs);
+      } catch (err) {
+        console.error('Errore:', err);
+      }
+    };
+
+    fetchData();
+  }, [userId, jwt]);
 
   const handleSort = (key: SortKey) => {
     if (key === sortKey) {
@@ -157,7 +178,7 @@ export default function TransactionHistory() {
     );
   };
 
-  const sortedTransactions = [...initialTransactions].sort((a, b) => {
+  const sortedTransactions = [...transactions].sort((a, b) => {
     const aVal = a[sortKey];
     const bVal = b[sortKey];
 
@@ -233,11 +254,11 @@ export default function TransactionHistory() {
           {paginatedTransactions.map((tx, idx) => (
             <tr key={idx}>
               <td>{tx.date}</td>
-              <td>{tx.type}</td>
+              <td>{tx.typology}</td>
               <td>{tx.method || '-'}</td>
               {/* <td>{tx.account}</td> */}
-              <td>{tx.amount.toFixed(2)}</td>
-              <td>{tx.status}</td>
+              <td>{tx.amount}</td>
+              <td>{tx.approved}</td>
             </tr>
           ))}
         </tbody>
