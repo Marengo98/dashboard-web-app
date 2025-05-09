@@ -35,15 +35,19 @@ export default function TransactionHistory() {
     const fetchData = async () => {
       if (!userId || !jwt) return;
       try {
-        const txs = await getUserTransactions(userId.toString(), jwt);
-        setTransactions(txs);
+        const res = await fetch(`/api/transaction?userId=${userId}&jwt=${jwt}`);
+        if (!res.ok) throw new Error('Errore nella chiamata API interna');
+  
+        const data = await res.json();
+        setTransactions(data); // ✅ imposta le transazioni ricevute
       } catch (err) {
         console.error('Errore:', err);
       }
     };
-
+  
     fetchData();
   }, [userId, jwt]);
+  
 
   const handleSort = (key: SortKey) => {
     if (key === sortKey) {
