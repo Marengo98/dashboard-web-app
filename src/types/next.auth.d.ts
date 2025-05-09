@@ -6,6 +6,9 @@ declare module 'next-auth' {
     username: string;
     email: string;
     jwt: string;
+    walletId?: string;
+    balance:number;
+    account_number:number;
   }
 
   interface Session {

@@ -10,7 +10,7 @@ import { useSidebar } from '@/components/Layout/Dashboard/SidebarProvider'
 export default function Sidebar({ children }: { children: React.ReactNode }) {
   const [isNarrow, setIsNarrow] = useState(false)
 
-  const { showSidebarState: [isShowSidebar] } = useSidebar()
+  const { showSidebar, setShowSidebar } = useSidebar();
 
   const toggleIsNarrow = () => {
     const newValue = !isNarrow
@@ -29,7 +29,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
     <div
       className={classNames('sidebar d-flex flex-column position-fixed h-100 border-end', {
         'sidebar-narrow': isNarrow,
-        show: isShowSidebar,
+        show: showSidebar,
       })}
       id="sidebar"
     >

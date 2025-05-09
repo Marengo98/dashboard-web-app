@@ -4,8 +4,8 @@ import { Container, Table, Pagination } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
-import { getUserTransactions, getWalletTransactions } from '@/app/api/transaction/route';
 import { useSession } from 'next-auth/react';
+import { getUserTransactions } from '@/utils/strapi';
 
 type Transaction = {
   date: string;
@@ -16,123 +16,9 @@ type Transaction = {
   status: string;
 };
 
-// const initialTransactions: Transaction[] = [
-//   {
-//     date: '15/05/2025 10:38:24',
-//     type: 'Withdraw',
-//     method: 'Crypto Wallet',
-//     account: 'MT5 5001542',
-//     amount: 200.0,
-//     status: 'Completed',
-//   },
-//   {
-//     date: '10/05/2025 16:28:23',
-//     type: 'Withdraw',
-//     method: 'Crypto Wallet',
-//     account: 'MT5 5001313',
-//     amount: 234.0,
-//     status: 'Completed',
-//   },
-//   {
-//     date: '09/05/2025 11:47:37',
-//     type: 'Transfer',
-//     method: '',
-//     account: 'MT5 5000996 → MT5 5001542',
-//     amount: 551.41,
-//     status: 'Approved → Approved',
-//   },
-//   {
-//     date: '09/05/2025 11:47:17',
-//     type: 'Transfer',
-//     method: '',
-//     account: 'MT5 5001188 → MT5 5000996',
-//     amount: 78.57,
-//     status: 'Approved → Approved',
-//   },
-//   {
-//     date: '08/05/2025 10:18:53',
-//     type: 'Withdraw',
-//     method: 'Crypto Wallet',
-//     account: 'MT5 5001542',
-//     amount: 100.0,
-//     status: 'Completed',
-//   },
-//   {
-//     date: '05/04/2025 14:20:00',
-//     type: 'Deposit',
-//     method: 'Wire Transfer',
-//     account: 'MT5 5001188',
-//     amount: 350.0,
-//     status: 'Completed',
-//   },
-//   {
-//     date: '01/04/2025 09:10:12',
-//     type: 'Withdraw',
-//     method: 'Crypto Wallet',
-//     account: 'MT5 5001313',
-//     amount: 50.0,
-//     status: 'Pending',
-//   },{
-//     date: '15/04/2025 10:38:24',
-//     type: 'Withdraw',
-//     method: 'Crypto Wallet',
-//     account: 'MT5 5001542',
-//     amount: 200.0,
-//     status: 'Completed',
-//   },
-//   {
-//     date: '10/04/2025 16:28:23',
-//     type: 'Withdraw',
-//     method: 'Crypto Wallet',
-//     account: 'MT5 5001313',
-//     amount: 234.0,
-//     status: 'Completed',
-//   },
-//   {
-//     date: '09/04/2025 11:47:37',
-//     type: 'Transfer',
-//     method: '',
-//     account: 'MT5 5000996 → MT5 5001542',
-//     amount: 551.41,
-//     status: 'Approved → Approved',
-//   },
-//   {
-//     date: '09/04/2025 11:47:17',
-//     type: 'Transfer',
-//     method: '',
-//     account: 'MT5 5001188 → MT5 5000996',
-//     amount: 78.57,
-//     status: 'Approved → Approved',
-//   },
-//   {
-//     date: '08/04/2025 10:18:53',
-//     type: 'Withdraw',
-//     method: 'Crypto Wallet',
-//     account: 'MT5 5001542',
-//     amount: 100.0,
-//     status: 'Completed',
-//   },
-//   {
-//     date: '05/04/2025 14:20:00',
-//     type: 'Deposit',
-//     method: 'Wire Transfer',
-//     account: 'MT5 5001188',
-//     amount: 350.0,
-//     status: 'Completed',
-//   },
-//   {
-//     date: '01/04/2025 09:10:12',
-//     type: 'Withdraw',
-//     method: 'Crypto Wallet',
-//     account: 'MT5 5001313',
-//     amount: 50.0,
-//     status: 'Pending',
-//   },
-// ];
-
 type SortKey = keyof Transaction;
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 10;
 
 export default function TransactionHistory() {
   const [transactions, setTransactions] = useState([]);
@@ -147,7 +33,7 @@ export default function TransactionHistory() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if(!userId || !jwt)return;
+        if (!userId || !jwt) return;
         const txs = await getUserTransactions(userId.toString(), jwt);
         setTransactions(txs);
       } catch (err) {
@@ -179,9 +65,13 @@ export default function TransactionHistory() {
   };
 
   const sortedTransactions = [...transactions].sort((a, b) => {
-    const aVal = a[sortKey];
-    const bVal = b[sortKey];
-
+    var aVal = a.attributes[sortKey];
+     var bVal = b.attributes[sortKey];
+    
+    if (sortKey === 'approved') {
+      aVal = aVal ? 'Completed' : 'Pending';
+      bVal = bVal ? 'Completed' : 'Pending';
+    }
     if (typeof aVal === 'number' && typeof bVal === 'number') {
       return sortOrder === 'asc' ? aVal - bVal : bVal - aVal;
     }
@@ -221,8 +111,8 @@ export default function TransactionHistory() {
 
   return (
     <Container className="my-4">
-        <h2>
-        Transaction History 
+      <h2>
+        Transaction History
       </h2>
       <p className="text-muted mb-3">View the history of all your financial transactions</p>
       <hr />
@@ -233,11 +123,17 @@ export default function TransactionHistory() {
             <th onClick={() => handleSort('date')} style={{ cursor: 'pointer' }}>
               Transaction date {getIcon('date')}
             </th>
-            <th onClick={() => handleSort('type')} style={{ cursor: 'pointer' }}>
-              Type {getIcon('type')}
+            <th 
+           // onClick={() => handleSort('type')} style={{ cursor: 'pointer' }}
+            >
+              Type 
+              {/* {getIcon('type')} */}
             </th>
-            <th onClick={() => handleSort('method')} style={{ cursor: 'pointer' }}>
-              Method {getIcon('method')}
+            <th
+            // onClick={() => handleSort('method')} style={{ cursor: 'pointer' }}
+             >
+              Method 
+              {/* {getIcon('method')} */}
             </th>
             {/* <th onClick={() => handleSort('account')} style={{ cursor: 'pointer' }}>
               Account {getIcon('account')}
@@ -245,22 +141,27 @@ export default function TransactionHistory() {
             <th onClick={() => handleSort('amount')} style={{ cursor: 'pointer' }}>
               Amount {getIcon('amount')}
             </th>
-            <th onClick={() => handleSort('status')} style={{ cursor: 'pointer' }}>
-              Status {getIcon('status')}
+            <th 
+            //onClick={() => handleSort('status')} style={{ cursor: 'pointer' }}
+            >
+              Status
+              {/* Status {getIcon('status')} */}
             </th>
           </tr>
         </thead>
         <tbody>
-          {paginatedTransactions.map((tx, idx) => (
-            <tr key={idx}>
-              <td>{tx.date}</td>
-              <td>{tx.typology}</td>
-              <td>{tx.method || '-'}</td>
-              {/* <td>{tx.account}</td> */}
-              <td>{tx.amount}</td>
-              <td>{tx.approved}</td>
-            </tr>
-          ))}
+          {paginatedTransactions.map((tx, idx) => {
+            //console.log('🧾 Transazione:', tx) // 👈 stampa ogni transazione
+            return (
+              <tr key={idx}>
+                <td>{tx.attributes.date}</td>
+                <td>{tx.attributes.typology.trim() === 'TAKEOVER'? 'Withdraw' : 'Deposit'}</td>
+                <td>{tx.attributes.method === 'bank' ? 'Bank Wire' : 'Crypto Wallet'}</td>
+                <td>{tx.attributes.amount}</td>
+                <td>{tx.attributes.approved ? 'Completed' : 'Pending'}</td>
+              </tr>
+            )
+          })}
         </tbody>
       </Table>
 

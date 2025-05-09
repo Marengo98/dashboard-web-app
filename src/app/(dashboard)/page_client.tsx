@@ -21,14 +21,12 @@ export default function TradeAccountClient() {
   ];
 
   return (
-    <Container>
-    
-
-      <Col>
-      <h2>Account Summary</h2>
-      <Row className="w-100 align-items-center justify-content-between mb-4">
-        <Col>
-          <h4 className="mb-0">Benvenuto{user?.username ? `, ${user.username}` : ''} 👋</h4>
+    <Container className="py-4">
+      <Row className="align-items-center justify-content-between mb-4">
+        <Col xs={12} md="auto">
+          <h4 className="mb-2 mb-md-0">
+            Benvenuto{user?.username ? `, ${user.username}` : ''} 👋
+          </h4>
         </Col>
         <Col xs="auto">
           <Button variant="outline-danger" onClick={() => signOut({ callbackUrl: '/login' })}>
@@ -37,30 +35,38 @@ export default function TradeAccountClient() {
           </Button>
         </Col>
       </Row>
-        <Row className="w-100 mt-2">
-          {buttons.map((btn, index) => (
-            <Col className="p-1  ">
-              <Button variant="primary" className="w-100 h-100 d-flex flex-column justify-content-center align-items-center" key={index}
-                href={btn.href} >
-                <Row></Row>
-                <FontAwesomeIcon icon={btn.icon} size="2x" className="text-blue-600 mb-2" />
-                <span>{btn.label}</span>
-              </Button>
-            </Col>
 
-          ))}
-        </Row>
-        <Col className='mt-5'>
-          <Row className="mb-2 align-items-center">
-            <Col xs={3}><strong>Balance:</strong></Col>
-            <Col xs={3}> <div className="p-2 bg-body-secondary text-white rounded justify-content-center d-flex">1.000.000$</div></Col>
-          </Row>
-          <Row className="mb-2 align-items-center">
-            <Col xs={3}><strong>Number account:</strong></Col>
-            <Col xs={3} lassName="mb-2"> <div className="p-2 bg-body-secondary text-white rounded justify-content-center d-flex">1234567890</div></Col>
-          </Row>
+      <h2 className="mb-3">Account Summary</h2>
+
+      <Row className="gy-3">
+        {buttons.map((btn, index) => (
+          <Col key={index} xs={12} md={4}>
+            <Button
+              variant="primary"
+              className="w-100 h-100 d-flex flex-column justify-content-center align-items-center py-4"
+              href={btn.href}
+            >
+              <FontAwesomeIcon icon={btn.icon} size="2x" className="mb-2" />
+              <span>{btn.label}</span>
+            </Button>
+          </Col>
+        ))}
+      </Row>
+
+      <Row className="mt-5 gy-3">
+        <Col xs={12} md={6}>
+          <strong>Balance:</strong>
+          <div className="p-2 mt-1 bg-body-secondary text-white rounded text-center">
+            {user?.balance ?? '0.00'} €
+          </div>
         </Col>
-      </Col>
+        <Col xs={12} md={6}>
+          <strong>Number account:</strong>
+          <div className="p-2 mt-1 bg-body-secondary text-white rounded text-center">
+            {user?.account_number ?? '-'}
+          </div>
+        </Col>
+      </Row>
     </Container>
   );
 }

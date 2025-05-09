@@ -1,41 +1,26 @@
-export async function getWalletTransactions(walletId: number, jwt: string) {
-    const res = await fetch(
-      `http://vmi1680938.contaboserver.net:1337/api/wallets/${walletId}?populate[transactions][populate]=*`,
-      {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      }
-    );
-  
-    if (!res.ok) throw new Error('Errore nel recupero delle transazioni');
-  
-    return res.json().then(data => data.data.attributes.transactions.data);
-  }
+import { postTransactionTakeover } from "@/utils/strapi";
 
-  export async function getUserTransactions(userId: string, jwt: string) {
-    const params = new URLSearchParams({
-      populate: '*',
-      'filters[user][id]': userId.toString(),
-    });
-  
-    const res = await fetch(`http://vmi1680938.contaboserver.net:1337/api/wallets?${params.toString()}`, {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    });
-  
-    if (!res.ok) {
-      throw new Error('Errore nel recupero del wallet');
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const { amount, walletId, jwt, description, method } = body;
+
+    if (!amount || !walletId || !jwt) {
+      return new Response(
+        JSON.stringify({ error: 'Dati obbligatori mancanti: amount, walletId, jwt' }),
+        { status: 400 }
+      );
     }
-  
-    const data = await res.json();
-    console.log('Data: ', data);
-    const wallet = data.data?.[0];
-  
-    if (!wallet) {
-      throw new Error('Nessun wallet trovato per questo utente');
-    }
-  
-    return wallet.attributes.transactions.data; // ✅ solo transazioni
+
+    const tx = await postTransactionTakeover(amount, walletId, jwt, {
+      description,
+      method,
+    });
+
+    return new Response(JSON.stringify({ success: true, data: tx }), { status: 200 });
+
+  } catch (err) {
+    console.error('❌ Errore nel POST /api/transaction:', err);
+    return new Response(JSON.stringify({ error: 'Errore server' }), { status: 500 });
   }
+}

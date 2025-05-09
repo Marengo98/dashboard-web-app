@@ -1,34 +1,41 @@
-'use client'
+'use client';
 
 import {
-  createContext, Dispatch, SetStateAction, useContext, useMemo, useState,
-} from 'react'
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  Dispatch,
+  SetStateAction,
+  ReactNode,
+} from 'react';
 
 type SidebarContextType = {
-  showSidebarState: [boolean, Dispatch<SetStateAction<boolean>>];
+  showSidebar: boolean;
+  setShowSidebar: Dispatch<SetStateAction<boolean>>;
+};
+
+const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
+
+export default function SidebarProvider({ children }: { children: ReactNode }) {
+  const [showSidebar, setShowSidebar] = useState(false);
+
+  const value = useMemo(
+    () => ({ showSidebar, setShowSidebar }),
+    [showSidebar]
+  );
+
+  return (
+    <SidebarContext.Provider value={value}>
+      {children}
+    </SidebarContext.Provider>
+  );
 }
 
-export const SidebarContext = createContext<SidebarContextType>({
-  showSidebarState: [false, () => {}],
-})
-
-export default function SidebarProvider({ children }: {
-  children: React.ReactNode;
-}) {
-  const [isShowSidebar, setIsShowSidebar] = useState(false)
-
-  const value: SidebarContextType = useMemo(() => ({
-    showSidebarState: [isShowSidebar, setIsShowSidebar],
-  }), [isShowSidebar])
-
-  return <SidebarContext.Provider value={value}>{children}</SidebarContext.Provider>
-}
-
-export const useSidebar = () => {
-  const sidebar = useContext(SidebarContext)
-  if (sidebar === null) {
-    throw new Error('useSidebar hook must be used within SidebarProvider')
+export function useSidebar(): SidebarContextType {
+  const context = useContext(SidebarContext);
+  if (!context) {
+    throw new Error('useSidebar must be used within a SidebarProvider');
   }
-
-  return sidebar
+  return context;
 }

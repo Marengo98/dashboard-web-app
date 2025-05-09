@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
@@ -10,10 +11,12 @@ type Account = {
 };
 
 export default function WithdrawalForm({ accounts }: { accounts: Account[] }) {
+    const { data: session } = useSession()
+
     const [formData, setFormData] = useState({
-        method: 'Bank Wire (Normal bank wire)',
+        method: 'bank', // 👈 valore tecnico
         amount: '',
-        source: accounts[0]?.id ?? '',
+        // source: accounts[0]?.id ?? '',
         comment: '',
     });
 
@@ -26,24 +29,35 @@ export default function WithdrawalForm({ accounts }: { accounts: Account[] }) {
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+
         e.preventDefault();
         const form = e.currentTarget;
 
         if (!form.checkValidity()) {
+            alert('form non valida');
             e.stopPropagation();
             setValidated(true);
             return;
         }
 
-        const res = await fetch('/api/withdraw', {
+        const res = await fetch('/api/transaction', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                amount: formData.amount,
+                walletId: session?.user?.walletId,
+                jwt: session?.user.jwt,
+                description: formData.comment,
+                method: formData.method,
+            }),
         });
 
         if (res.ok) {
             alert('Withdrawal request submitted!');
         } else {
+            console.log('RES: ', res)
             alert('Error submitting withdrawal');
         }
     };
@@ -64,8 +78,8 @@ export default function WithdrawalForm({ accounts }: { accounts: Account[] }) {
                                 required
                                 className="bg-secondary text-white border-0"
                             >
-                                <option>Bank Wire (Normal bank wire)</option>
-                                <option>Crypto Wallet</option>
+                                <option value="bank">Bank Wire (Normal bank wire)</option>
+                                <option value="crypto">Crypto Wallet</option>
                             </Form.Select>
                             <Form.Control.Feedback
                                 type="invalid"
@@ -84,16 +98,24 @@ export default function WithdrawalForm({ accounts }: { accounts: Account[] }) {
                                 placeholder="0"
                                 name="amount"
                                 value={formData.amount}
-                                onChange={handleChange}
+                                onChange={(e) =>
+                                    setFormData((prev) => ({ ...prev, amount: e.target.value }))
+                                }
                                 required
                                 min="0.01"
+                                step="0.01" // consente anche decimali
                                 className="bg-secondary text-white border-0"
                             />
+
                             <Form.Control.Feedback
                                 type="invalid"
-                                className={validated && !formData.amount ? 'd-block' : 'd-block invisible'}
+                                className={
+                                    validated && (!formData.amount || Number(formData.amount) <= 0)
+                                        ? 'd-block'
+                                        : 'd-block invisible'
+                                }
                             >
-                                Please enter a valid amount.
+                                Please enter a valid amount greater than 0.
                             </Form.Control.Feedback>
                         </Form.Group>
                     </Col>
@@ -111,7 +133,7 @@ export default function WithdrawalForm({ accounts }: { accounts: Account[] }) {
                         </Form.Group>
                     </Col>
 
-                    <Col md={4}>
+                    {/* <Col md={4}>
                         <Form.Group controlId="source">
                             <Form.Label className="text-white">Source</Form.Label>
                             <Form.Select
@@ -134,7 +156,7 @@ export default function WithdrawalForm({ accounts }: { accounts: Account[] }) {
                                 Please select a source account.
                             </Form.Control.Feedback>
                         </Form.Group>
-                    </Col>
+                    </Col> */}
                 </Row>
 
                 <Row className="mb-3">
