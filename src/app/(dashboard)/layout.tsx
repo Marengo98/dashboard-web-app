@@ -23,10 +23,10 @@ export default function Layout({
       </Sidebar>
 
       <div className="wrapper d-flex flex-column min-vh-100">
-        {/* <Header /> */}
-        <Container fluid className='mt-3'>
+        <Header />
+        {/* <Container fluid className='mt-3'>
           <Breadcrumb />
-        </Container>
+        </Container> */}
         <div className="body flex-grow-1 px-sm-2 mb-4 mt-2">
           <Container fluid="lg">
             {children}

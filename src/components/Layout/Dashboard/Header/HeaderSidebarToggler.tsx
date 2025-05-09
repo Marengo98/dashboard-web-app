@@ -6,18 +6,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 
 export default function HeaderSidebarToggler() {
-  const {
-    showSidebarState: [isShowSidebar, setIsShowSidebar],
-  } = useSidebar()
+  const { showSidebar, setShowSidebar } = useSidebar()
 
   const toggleSidebar = () => {
-    setIsShowSidebar(!isShowSidebar)
+    setShowSidebar(!showSidebar)
   }
 
   return (
     <Button
       variant="link"
-      className="header-toggler rounded-0 shadow-none"
+      className="header-toggler rounded-0 shadow-none d-md-none" // mostra solo su mobile
       type="button"
       onClick={toggleSidebar}
     >
