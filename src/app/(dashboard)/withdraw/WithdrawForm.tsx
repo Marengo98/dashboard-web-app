@@ -57,7 +57,7 @@ export default function WithdrawalForm({ accounts }: { accounts: Account[] }) {
         if (res.ok) {
             alert('Withdrawal request submitted!');
         } else {
-            console.log('RES: ', res)
+            // console.log('RES: ', res)
             alert('Error submitting withdrawal');
         }
     };

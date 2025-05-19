@@ -74,7 +74,7 @@ return (
           disabled={submitting}
           placeholder={dict.login.form.username}
           aria-label="Username"
-          defaultValue="test_webapp"
+          defaultValue=""
         />
       </InputGroup>
 
@@ -92,7 +92,7 @@ return (
           disabled={submitting}
           placeholder={dict.login.form.password}
           aria-label="Password"
-          defaultValue="Test123"
+          defaultValue=""
         />
       </InputGroup>
 

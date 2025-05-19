@@ -30,7 +30,7 @@ export async function getWalletTransactions(walletId: number, jwt: string) {
     }
   
     const data = await res.json();
-    console.log('Data: ', data);
+    // console.log('Data: ', data);
     const wallet = data.data?.[0];
   
     if (!wallet) {
@@ -62,7 +62,7 @@ export async function getWalletTransactions(walletId: number, jwt: string) {
         },
       }),
     });
-  console.log('RES TRANSACTION: ',res);
+  // console.log('RES TRANSACTION: ',res);
     if (!res.ok) {
       const error = await res.json();
       throw new Error(`Errore Strapi: ${error.error?.message || res.statusText}`);
