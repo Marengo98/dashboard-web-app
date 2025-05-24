@@ -25,7 +25,7 @@ export default function TradeAccountClient() {
       <Row className="align-items-center justify-content-between mb-4">
         <Col xs={12} md="auto">
           <h4 className="mb-2 mb-md-0">
-            Benvenuto{user?.username ? `, ${user.username}` : ''} 👋
+            Benvenuto{user?.username ? `, ${user.username}` : ''}
           </h4>
         </Col>
         <Col xs="auto">

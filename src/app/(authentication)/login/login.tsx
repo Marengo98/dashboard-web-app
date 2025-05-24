@@ -107,11 +107,11 @@ return (
             {dict.login.form.submit}
           </Button>
         </Col>
-        <Col xs={6} className="text-end">
+        {/* <Col xs={6} className="text-end">
           <Link className="px-0" href="#">
             {dict.login.forgot_password}
           </Link>
-        </Col>
+        </Col> */}
       </Row>
     </Form>
   </>

@@ -12,10 +12,12 @@ export default function Header() {
       <Container fluid className="header-navbar d-flex align-items-center px-0">
         <HeaderSidebarToggler />
         <Link href="/" className="header-brand d-md-none">
-          <svg width="80" height="46">
-            <title>CoreUI Logo</title>
-            <use xlinkHref="/assets/brand/coreui.svg#full" />
-          </svg>
+            <img
+         
+          height="60"
+          src="/assets/brand/logo-total.png"
+          alt="TMP Logo"
+        />
         </Link>
         {/* <div className="header-nav d-none d-md-flex">
           <HeaderFeaturedNav />

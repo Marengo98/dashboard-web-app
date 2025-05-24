@@ -34,22 +34,26 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
       id="sidebar"
     >
       <div className="sidebar-brand d-none d-md-flex align-items-center justify-content-center">
-        <svg
+        <img
           className="sidebar-brand-full"
-          width="118"
-          height="46"
-        >
-          <title>TMP Logo</title>
-          <use xlinkHref="/assets/brand/coreui.svg#full" />
-        </svg>
-        <svg
+          width="200"
+          src="/assets/brand/logo-total.png#full"
+          alt="TMP Logo"
+        />
+          <img
+          className="sidebar-brand-narrow d-none"
+          width="50"
+          src="/assets/brand/logo-total.png#signet"
+          alt="TMP Logo"
+        />
+        {/* <svg
           className="sidebar-brand-narrow d-none"
           width="46"
           height="46"
         >
           <title>CoreUI Logo</title>
-          <use xlinkHref="/assets/brand/coreui.svg#signet" />
-        </svg>
+          <use xlinkHref="/assets/brand/logo-total.png#signet" />
+        </svg> */}
       </div>
 
       <div className="sidebar-nav flex-fill border-top">
